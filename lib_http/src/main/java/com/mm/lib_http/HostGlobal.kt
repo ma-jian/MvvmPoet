@@ -11,20 +11,20 @@ import okhttp3.HttpUrl
  */
 
 object HostGlobal {
-    var dynamicHostMap = hashMapOf<String, HttpUrl>()
+    var dynamicHostMap = hashMapOf<String, HashMap<String, String>>()
     val dynamicOriginalHostMap = hashMapOf<String, HostInfo>()
 }
 
-class HostInfo private constructor(val builder: Builder) {
-    val dynamicHostKey: String
-        get() = builder.dynamicHostKey
+class HostInfo private constructor(private val builder: Builder) {
+    internal val dynamicHost: Boolean
+        get() = builder.dynamicHost
 
     @Volatile
-    var hostKey: String = ""
+    internal var hostKey: String = ""
         get() {
             val stringBuilder = StringBuilder()
-            if (!TextUtils.isEmpty(dynamicHostKey)) {
-                stringBuilder.append(dynamicHostKey)
+            if (dynamicHost) {
+                stringBuilder.append("dynamicHost")
                 stringBuilder.append("_")
             }
             val str = if (needSystemParam) "1" else "0"
@@ -39,7 +39,7 @@ class HostInfo private constructor(val builder: Builder) {
     private val signMethod
         get() = builder.signMethod
 
-    val srcHost: String
+    internal val srcHost: String
         get() = builder.srcHost
 
     companion object {
@@ -47,7 +47,7 @@ class HostInfo private constructor(val builder: Builder) {
     }
 
     class Builder {
-        internal var dynamicHostKey: String = ""
+        internal var dynamicHost = false
         internal var needSystemParam = false
         internal var signMethod = 0
         internal var srcHost: String = ""
@@ -56,8 +56,8 @@ class HostInfo private constructor(val builder: Builder) {
             this.srcHost = srcHost ?: ""
         }
 
-        fun dynamicHostKey(dynamicHostKey: String?) = apply {
-            this.dynamicHostKey = dynamicHostKey ?: ""
+        fun dynamicHost(dynamicHost: Boolean) = apply {
+            this.dynamicHost = dynamicHost
         }
 
         fun needSystemParam(needSystemParam: Boolean) = apply {

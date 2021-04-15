@@ -12,7 +12,7 @@ annotation class HOST(
     val debugUrl: String = "",
     val preUrl: String = "",
     val releaseUrl: String,
-    val dynamicHostKey: String = "",
+    val dynamicHost: Boolean = false,
     val needSystemParam: Boolean = true,
     val signMethod: Int = -1,
 ) {

@@ -14,7 +14,7 @@ import okhttp3.Response
  * Describe :
  */
 
-class AuthCookieJar internal constructor(val context: Context, val configuration: RetrofitConfiguration) {
+class AuthCookieJar internal constructor(private val context: Context, private val configuration: RetrofitConfiguration) {
     private val KEY_NAME_AUTH = "auth_value"
     private val KEY_NAME_AUTH_EXPIRED = "auth_expired"
     private val PREF_NAME = "auth_cookie_pref"

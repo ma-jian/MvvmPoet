@@ -1,6 +1,7 @@
 package com.mm.lib_http
 
 import okhttp3.Interceptor
+import okhttp3.logging.HttpLoggingInterceptor
 
 
 /**
@@ -10,8 +11,6 @@ import okhttp3.Interceptor
  */
 
 open class RetrofitConfiguration private constructor(private val builder: Builder) {
-    val mEnv: Int
-        get() = builder.env
     val mInterceptors: List<Interceptor>
         get() = builder.interceptors
     val mNetworkInterceptors: List<Interceptor>
@@ -22,54 +21,55 @@ open class RetrofitConfiguration private constructor(private val builder: Builde
         get() = builder.cookieName
     val mDynamicHostUrl: String
         get() = builder.dynamicHostUrl
+    val mLevel: HttpLoggingInterceptor.Level
+        get() = builder.level
 
     companion object {
-        fun build(block :Builder.() -> Unit) = Builder().apply(block).build()
+        fun build(block: Builder.() -> Unit) = Builder().apply(block).build()
+        val DEFAULT = build {}
     }
 
     class Builder constructor() {
-        internal var env = Env.RELEASE
         internal var interceptors: List<Interceptor> = emptyList()
         internal var networkInterceptors: List<Interceptor> = emptyList()
         internal var filterHost: MutableList<String> = ArrayList()
         internal var cookieName: String = "cookie"
         internal var dynamicHostUrl: String = ""
+        internal var level = HttpLoggingInterceptor.Level.NONE
 
-       internal constructor(retrofitConfiguration: RetrofitConfiguration) : this() {
-           this.env = retrofitConfiguration.mEnv
-           this.interceptors = retrofitConfiguration.mInterceptors
-           this.networkInterceptors = retrofitConfiguration.mNetworkInterceptors
-           this.filterHost = retrofitConfiguration.mFilterHost.toMutableList()
-           this.cookieName = retrofitConfiguration.mCookieName
-           this.dynamicHostUrl = retrofitConfiguration.mDynamicHostUrl
-       }
+        internal constructor(retrofitConfiguration: RetrofitConfiguration) : this() {
+            this.interceptors = retrofitConfiguration.mInterceptors
+            this.networkInterceptors = retrofitConfiguration.mNetworkInterceptors
+            this.filterHost = retrofitConfiguration.mFilterHost.toMutableList()
+            this.cookieName = retrofitConfiguration.mCookieName
+            this.dynamicHostUrl = retrofitConfiguration.mDynamicHostUrl
+            this.level = retrofitConfiguration.mLevel
+        }
 
         fun build(): RetrofitConfiguration = RetrofitConfiguration(this)
 
-        fun env(env: Int): Builder  = apply {
-            if (env == Env.RELEASE || env == Env.PRE_RELEASE || env == Env.DEBUG) {
-                this.env = env
-            }
+        fun interceptors(interceptors: () -> List<Interceptor>) = apply {
+            this.interceptors = interceptors.invoke()
         }
 
-        fun interceptors(interceptors: List<Interceptor>) = apply {
-            this.interceptors = interceptors
+        fun networkInterceptors(interceptors: () -> List<Interceptor>) = apply {
+            this.networkInterceptors = interceptors.invoke()
         }
 
-        fun networkInterceptors(interceptors: List<Interceptor>) =apply {
-            this.networkInterceptors = interceptors
+        fun filterHost(hosts: () -> List<String>) = apply {
+            this.filterHost = hosts.invoke().toMutableList()
         }
 
-        fun filterHost(hosts: List<String>) = apply {
-            this.filterHost = hosts.toMutableList()
+        fun cookieName(name: () -> String) = apply {
+            this.cookieName = name.invoke()
         }
 
-        fun cookieName(name: String) = apply {
-            this.cookieName = name
+        fun dynamicHost(url: () -> String) = apply {
+            this.dynamicHostUrl = url.invoke()
         }
 
-        fun dynamicHost(url: String) = apply {
-            this.dynamicHostUrl = url
+        fun httpLogLevel(level: () -> HttpLoggingInterceptor.Level) = apply {
+            this.level = level.invoke()
         }
     }
 }

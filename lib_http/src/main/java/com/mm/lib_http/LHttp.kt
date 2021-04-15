@@ -10,24 +10,20 @@ import android.util.Log
  */
 
 object LHttp {
-    var isDebug = true
+    internal var isDebug = false
     fun i(msg: String?) {
-        if (isDebug && !TextUtils.isEmpty(msg))
-            Log.i("LHttp: ", "$msg")
+        if (isDebug && !TextUtils.isEmpty(msg)) Log.i("LHttp: ", "$msg")
     }
 
     fun d(msg: String?) {
-        if (isDebug && !TextUtils.isEmpty(msg))
-            Log.d("LHttp: ", "$msg")
+        if (isDebug && !TextUtils.isEmpty(msg)) Log.d("LHttp: ", "$msg")
     }
 
     fun e(msg: String?) {
-        if (isDebug && !TextUtils.isEmpty(msg))
-            Log.e("LHttp: ", "$msg")
+        if (isDebug && !TextUtils.isEmpty(msg)) Log.e("LHttp: ", "$msg")
     }
 
     fun d(tag: String, msg: String?) {
-        if (isDebug && !TextUtils.isEmpty(msg))
-            Log.i(tag, "$msg")
+        if (isDebug && !TextUtils.isEmpty(msg)) Log.i(tag, "$msg")
     }
 }

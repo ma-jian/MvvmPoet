@@ -11,9 +11,7 @@ import retrofit2.http.Path
  * Date : 4/14/21
  * Describe : https://api.github.com/
  */
-@HOST(
-    releaseUrl = "https://api.github.com/"
-)
+@HOST(releaseUrl = "https://api.github.com/", dynamicHost = true)
 interface DemoService {
     @TimeOut(CONNECT_TIMEOUT = 2)
     @GET("users/{user}")

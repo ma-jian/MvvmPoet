@@ -1,6 +1,7 @@
 package com.mm.mvvmpoet
 
 import android.app.Application
+import com.mm.lib_http.Env
 import com.mm.lib_http.RetrofitConfiguration
 import com.mm.lib_http.RetrofitGlobal
 import okhttp3.logging.HttpLoggingInterceptor
@@ -15,10 +16,14 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         val configuration = RetrofitConfiguration.build {
-            interceptors(listOf(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
-            }))
+            httpLogLevel { HttpLoggingInterceptor.Level.HEADERS }
+            dynamicHost { "https://www.fastmock.site/mock/98167980d234084dd1fcbd22e1ba1cfe/poet/api/get_auth_cookie" }
         }
-        RetrofitGlobal.init(this,configuration)
+
+        RetrofitGlobal.build(this) {
+            env = Env.DEBUG
+            isDebug = true
+            config = configuration
+        }
     }
 }

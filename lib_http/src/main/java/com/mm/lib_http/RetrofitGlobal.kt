@@ -5,10 +5,11 @@ import android.text.TextUtils
 import com.google.gson.Gson
 import okhttp3.Dispatcher
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
@@ -24,71 +25,42 @@ object Env {
     const val PRE_RELEASE = 2
 }
 
-open class RetrofitGlobal {
+open class RetrofitGlobal private constructor(val build: Builder) {
+    private var init = false
+    internal var mRetrofitBuilder: Retrofit.Builder
+    internal val mEnv
+        get() = build.env
+    internal val mAppContext: Context
+        get() = build.appContext
+
+    init {
+        val authCookieJar = AuthCookieJar(build.appContext, build.config.invoke())
+        val dispatcher = Dispatcher()
+        mRetrofitBuilder = createRetrofit(dispatcher, authCookieJar, build.config.invoke())
+        val workerRunnable = WorkerRunnable(authCookieJar, build.config.invoke())
+        if (!init) {
+            init = true
+            dispatcher.executorService.execute(workerRunnable)
+        }
+    }
+
     companion object {
         internal val rwLock = ReentrantReadWriteLock()
-        private var init = false
+        internal val gson = Gson()
+        var env = Env.RELEASE
         var retrofitBuilder: Retrofit.Builder? = null
-        var mEnv = Env.RELEASE
         internal lateinit var appContext: Context
-
-        fun init(context: Context) {
-            init(context, RetrofitConfiguration.Builder().build())
-        }
-
-        fun init(context: Context, interceptors: List<Interceptor>) {
-            val configuration = RetrofitConfiguration.build {
-                interceptors(interceptors)
+        fun build(context: Context, block: Builder.() -> Unit) =
+            Builder(context).apply(block).build().apply {
+                appContext = context
+                env = mEnv
+                retrofitBuilder = mRetrofitBuilder
             }
-            init(context, configuration)
-        }
 
-        fun init(context: Context, configuration: RetrofitConfiguration) {
-            this.appContext = context
-            this.mEnv = configuration.mEnv
-            val authCookieJar = AuthCookieJar(context, configuration)
-            val dispatcher = Dispatcher()
-            retrofitBuilder ?: createRetrofit(dispatcher, authCookieJar, configuration).apply {
-                retrofitBuilder = this
-            }
-            val workerRunnable = WorkerRunnable(authCookieJar, configuration)
-            if (!init) {
-                init = true
-                dispatcher.executorService.execute(workerRunnable)
-            }
-        }
-
-        private fun createRetrofit(
-            dispatcher: Dispatcher,
-            authCookieJar: AuthCookieJar,
-            configuration: RetrofitConfiguration
-        ): Retrofit.Builder {
-            val okHttpBuilder = OkHttpClient.Builder()
-                .dispatcher(dispatcher)
-                .readTimeout(30L, TimeUnit.SECONDS)
-                .writeTimeout(30L, TimeUnit.SECONDS)
-                .connectTimeout(20L, TimeUnit.SECONDS)
-            configuration.mInterceptors.forEach {
-                okHttpBuilder.addInterceptor(it)
-            }
-            okHttpBuilder.addInterceptor(DynamicHostInterceptor())
-                .addInterceptor(AuthCookieInterceptor(authCookieJar))
-                .addInterceptor(TimeOutInterceptor())
-            configuration.mNetworkInterceptors.forEach {
-                okHttpBuilder.addNetworkInterceptor(it)
-            }
-            return Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpBuilder.build())
-        }
-
-        inline fun <reified T> create(): T? {
-            T::class.java.isAnnotation
+        inline fun <reified T> create(): T {
             val annotation = T::class.java.getAnnotation(HOST::class.java)
-            require(annotation != null) {
-                "需要指定对应的Host"
-            }
-            var srcUrl = when (mEnv) {
+            require(annotation != null) { "需要指定对应的Host" }
+            var srcUrl = when (env) {
                 Env.DEBUG -> annotation.debugUrl
                 Env.PRE_RELEASE -> annotation.preUrl
                 else -> annotation.releaseUrl
@@ -98,13 +70,48 @@ open class RetrofitGlobal {
             }
             val httpUrl = srcUrl.toHttpUrl()
             val hostInfo = HostInfo.build {
-                srcHost(httpUrl.host)
-                    .dynamicHostKey(annotation.dynamicHostKey)
-                    .needSystemParam(annotation.needSystemParam)
-                    .signMethod(annotation.signMethod)
+                srcHost(httpUrl.host).dynamicHost(annotation.dynamicHost)
+                    .needSystemParam(annotation.needSystemParam).signMethod(annotation.signMethod)
             }
             HostGlobal.dynamicOriginalHostMap[httpUrl.host] = hostInfo
-            return retrofitBuilder?.baseUrl(httpUrl)?.build()?.create(T::class.java)
+            require(retrofitBuilder != null) { "在使用create前,请先进行RetrofitGlobal初始化build()" }
+            return retrofitBuilder!!.baseUrl(httpUrl).build().create()
         }
+    }
+
+    private fun createRetrofit(dispatcher: Dispatcher, authCookieJar: AuthCookieJar, configuration: RetrofitConfiguration): Retrofit.Builder {
+        val okHttpBuilder = OkHttpClient.Builder().dispatcher(dispatcher)
+            .readTimeout(30L, TimeUnit.SECONDS).writeTimeout(30L, TimeUnit.SECONDS)
+            .connectTimeout(20L, TimeUnit.SECONDS)
+        configuration.mInterceptors.forEach {
+            okHttpBuilder.addInterceptor(it)
+        }
+        okHttpBuilder.addInterceptor(DynamicHostInterceptor())
+            .addInterceptor(AuthCookieInterceptor(authCookieJar))
+            .addInterceptor(TimeOutInterceptor()).addInterceptor(HttpLoggingInterceptor().apply {
+                level = configuration.mLevel
+            })
+        configuration.mNetworkInterceptors.forEach {
+            okHttpBuilder.addNetworkInterceptor(it)
+        }
+        return Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpBuilder.build())
+    }
+
+    class Builder internal constructor(internal val appContext: Context) {
+        var config: () -> RetrofitConfiguration = { RetrofitConfiguration.DEFAULT }
+        var isDebug: Boolean = false
+            set(value) {
+                LHttp.isDebug = value
+                field = value
+            }
+        var env: Int = Env.RELEASE
+            set(value) {
+                if (value == Env.RELEASE || value == Env.PRE_RELEASE || value == Env.DEBUG) {
+                    field = value
+                }
+            }
+
+        fun build() = RetrofitGlobal(this)
     }
 }
