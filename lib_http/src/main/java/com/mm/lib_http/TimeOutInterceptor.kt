@@ -20,7 +20,7 @@ class TimeOutInterceptor : Interceptor {
                 val newChain = chain.run {
                     if (it.CONNECT_TIMEOUT > 0) withConnectTimeout(it.CONNECT_TIMEOUT, it.unit) else this
                 }.run {
-                    if (it.CONNECT_TIMEOUT > 0) withConnectTimeout(it.CONNECT_TIMEOUT, it.unit) else this
+                    if (it.READ_TIMEOUT > 0) withReadTimeout(it.READ_TIMEOUT, it.unit) else this
                 }.run {
                     if (it.WRITE_TIMEOUT > 0) withWriteTimeout(it.WRITE_TIMEOUT, it.unit) else this
                 }

@@ -15,15 +15,15 @@ import okhttp3.logging.HttpLoggingInterceptor
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        val configuration = RetrofitConfiguration.build {
-            httpLogLevel { HttpLoggingInterceptor.Level.HEADERS }
-            dynamicHost { "https://www.fastmock.site/mock/98167980d234084dd1fcbd22e1ba1cfe/poet/api/get_auth_cookie" }
-        }
-
         RetrofitGlobal.build(this) {
             env = Env.DEBUG
             isDebug = true
-            config = configuration
+            config = {
+                RetrofitConfiguration.build {
+                    httpLogLevel { HttpLoggingInterceptor.Level.HEADERS }
+                    dynamicHost { "https://www.fastmock.site/mock/98167980d234084dd1fcbd22e1ba1cfe/poet/api/get_auth_cookie" }
+                }
+            }
         }
     }
 }
