@@ -59,6 +59,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"
     //hilt
     implementation "com.google.dagger:hilt-android:$rootProject.hiltVersion"
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
 
 //    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
@@ -68,4 +69,6 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation "org.jetbrains.kotlin:kotlin-script-runtime:1.4.32"
+
 }

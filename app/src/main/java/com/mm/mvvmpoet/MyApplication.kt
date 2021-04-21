@@ -25,5 +25,10 @@ class MyApplication : Application() {
                 }
             }
         }
+        FitDisplayMetrics.build(applicationContext) {
+            openFontScale(true)
+            designDp(360f)
+            fitDisplayOrientation(FitDisplayMetrics.ORIENTATION_WIDTH)
+        }
     }
 }

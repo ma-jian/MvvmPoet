@@ -9,7 +9,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantReadWriteLock
 
@@ -27,7 +26,7 @@ object Env {
 
 open class RetrofitGlobal private constructor(val build: Builder) {
     private var init = false
-    internal var mRetrofitBuilder: Retrofit.Builder
+    private var mRetrofitBuilder: Retrofit.Builder
     internal val mEnv
         get() = build.env
     internal val mAppContext: Context
@@ -47,8 +46,8 @@ open class RetrofitGlobal private constructor(val build: Builder) {
     companion object {
         internal val rwLock = ReentrantReadWriteLock()
         internal val gson = Gson()
-        var env = Env.RELEASE
-        var retrofitBuilder: Retrofit.Builder? = null
+        private var env = Env.RELEASE
+        private lateinit var retrofitBuilder: Retrofit.Builder
         internal lateinit var appContext: Context
         fun build(context: Context, block: Builder.() -> Unit) =
             Builder(context).apply(block).build().apply {
@@ -57,8 +56,10 @@ open class RetrofitGlobal private constructor(val build: Builder) {
                 retrofitBuilder = mRetrofitBuilder
             }
 
-        inline fun <reified T> create(): T {
-            val annotation = T::class.java.getAnnotation(HOST::class.java)
+        inline fun <reified T> create(): T = create(T::class.java)
+
+        fun <T> create(clazz: Class<T>): T {
+            val annotation = clazz.getAnnotation(HOST::class.java)
             require(annotation != null) { "需要指定对应的Host" }
             var srcUrl = when (env) {
                 Env.DEBUG -> annotation.debugUrl
@@ -75,7 +76,7 @@ open class RetrofitGlobal private constructor(val build: Builder) {
             }
             HostGlobal.dynamicOriginalHostMap[httpUrl.host] = hostInfo
             require(retrofitBuilder != null) { "在使用create前,请先进行RetrofitGlobal初始化build()" }
-            return retrofitBuilder!!.baseUrl(httpUrl).build().create()
+            return retrofitBuilder.baseUrl(httpUrl).build().create(clazz)
         }
     }
 
