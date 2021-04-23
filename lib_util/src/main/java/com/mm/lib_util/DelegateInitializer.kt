@@ -1,4 +1,4 @@
-package com.mm.mvvmpoet.etoast
+package com.mm.lib_util
 
 import android.app.Application
 import android.content.ContentProvider
@@ -7,12 +7,12 @@ import android.database.Cursor
 import android.net.Uri
 
 /**
- * Toast 初始化
+ * 为[ActivityDelegate]提供默认初始化
  */
-class EToastInitializer : ContentProvider() {
+class DelegateInitializer : ContentProvider() {
     override fun onCreate(): Boolean {
         if (context is Application) {
-            ToastGlobal.build(context as Application)
+            ActivityDelegate.register(context as Application)
         }
         return true
     }

@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
 //    id 'dagger.hilt.android.plugin'
 }
 
@@ -35,6 +36,7 @@ android {
 
 dependencies {
     implementation project(":lib_http")
+    implementation project(":lib_util")
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     //Android view
     implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"

@@ -1,4 +1,4 @@
-package com.mm.mvvmpoet.etoast
+package com.mm.lib_util.etoast
 
 import android.content.Context
 import android.graphics.PixelFormat
@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.annotation.IntDef
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
-import com.mm.mvvmpoet.R
+import com.mm.lib_util.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -166,7 +166,7 @@ internal class EToast private constructor(private val builder: Builder) {
             this.mText = text
         }
 
-        fun duration(@EToast.Duration duration: Int) = apply {
+        fun duration(@Duration duration: Int) = apply {
             this.mDuration = duration
         }
 

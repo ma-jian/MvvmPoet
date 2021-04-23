@@ -1,4 +1,4 @@
-package com.mm.mvvmpoet.etoast
+package com.mm.lib_util.etoast
 
 import android.text.TextUtils
 import android.util.Log

@@ -55,8 +55,19 @@
         android:layout_height="wrap_content"
         android:text="flow"
         app:layout_constraintBottom_toBottomOf="@+id/retrofit"
-        app:layout_constraintEnd_toEndOf="@+id/editName"
+        app:layout_constraintEnd_toEndOf="@+id/dialogQueue"
         app:layout_constraintStart_toEndOf="@+id/retrofit"
+        app:layout_constraintTop_toTopOf="@+id/retrofit" />
+
+
+    <Button
+        android:id="@+id/dialogQueue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="dialogQueue"
+        app:layout_constraintBottom_toBottomOf="@+id/retrofit"
+        app:layout_constraintEnd_toEndOf="@+id/editName"
+        app:layout_constraintStart_toEndOf="@+id/flow"
         app:layout_constraintTop_toTopOf="@+id/retrofit" />
 
     <Button

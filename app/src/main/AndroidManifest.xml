@@ -24,8 +24,10 @@
         </activity>
         <activity android:name=".SecondActivity" />
         <provider
-            android:authorities="${applicationId}.EToastInitializer"
-            android:name=".etoast.EToastInitializer"/>
+            android:name="com.mm.lib_util.DelegateInitializer"
+            android:authorities="${applicationId}.DelegateInitializer"
+            android:enabled="@bool/delegate_watcher_auto_install"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -1,3 +1,4 @@
+include ':lib_util'
 include ':app'
 include ':lib_http'
 rootProject.name = "MvvmPoet"

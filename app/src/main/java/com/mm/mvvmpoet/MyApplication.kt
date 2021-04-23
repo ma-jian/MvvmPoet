@@ -4,6 +4,7 @@ import android.app.Application
 import com.mm.lib_http.Env
 import com.mm.lib_http.RetrofitConfiguration
 import com.mm.lib_http.RetrofitGlobal
+import com.mm.lib_util.FitDisplayMetrics
 import okhttp3.logging.HttpLoggingInterceptor
 
 /**

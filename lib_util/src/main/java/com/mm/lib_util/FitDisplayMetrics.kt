@@ -1,4 +1,4 @@
-package com.mm.mvvmpoet
+package com.mm.lib_util
 
 import android.content.ComponentCallbacks
 import android.content.Context
@@ -12,7 +12,7 @@ import androidx.annotation.IntDef
 /**
  * Created by : majian
  * Date : 4/20/21
- * Describe : 屏幕适配
+ * Describe : 指定屏幕宽高适配，支持动态恢复系统配置
  */
 
 class FitDisplayMetrics private constructor(val builder: Builder) {

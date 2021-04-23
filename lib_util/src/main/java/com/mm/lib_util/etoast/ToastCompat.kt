@@ -1,4 +1,4 @@
-package com.mm.mvvmpoet.etoast
+package com.mm.lib_util.etoast
 
 import android.app.Activity
 import android.app.AppOpsManager
@@ -11,6 +11,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
+import com.mm.lib_util.ActivityDelegate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -32,7 +33,7 @@ class ToastCompat private constructor(private val builder: Builder) {
             if (builder.mContext is Activity) {
                 mToast = createToast()
             } else {
-                ToastGlobal.global.get()?.activity?.let {
+                ActivityDelegate.delegate.get()?.mActivity?.let {
                     mToast = createToast()
                 }
             }
