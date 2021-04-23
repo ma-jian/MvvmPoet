@@ -2,4 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mm.lib_util">
 
+    <application>
+
+        <provider
+            android:name="com.mm.lib_util.DelegateInitializer"
+            android:authorities="${applicationId}.DelegateInitializer"
+            android:enabled="@bool/delegate_watcher_auto_install"
+            android:exported="false" />
+    </application>
 </manifest>
