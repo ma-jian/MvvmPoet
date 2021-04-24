@@ -9,7 +9,7 @@ import android.util.Log
  * Describe :
  */
 
-object LHttp {
+internal object LHttp {
     internal var isDebug = false
     fun i(msg: String?) {
         if (isDebug && !TextUtils.isEmpty(msg)) Log.i("LHttp: ", "$msg")

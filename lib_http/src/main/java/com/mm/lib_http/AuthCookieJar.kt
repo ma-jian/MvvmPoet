@@ -6,6 +6,7 @@ import android.text.TextUtils
 import okhttp3.Cookie
 import okhttp3.HttpUrl
 import okhttp3.Response
+import java.util.*
 
 
 /**
@@ -14,7 +15,7 @@ import okhttp3.Response
  * Describe :
  */
 
-class AuthCookieJar internal constructor(private val context: Context, private val configuration: RetrofitConfiguration) {
+internal class AuthCookieJar internal constructor(private val context: Context, private val configuration: RetrofitConfiguration) {
     private val KEY_NAME_AUTH = "auth_value"
     private val KEY_NAME_AUTH_EXPIRED = "auth_expired"
     private val PREF_NAME = "auth_cookie_pref"
@@ -46,7 +47,7 @@ class AuthCookieJar internal constructor(private val context: Context, private v
     }
 
     private fun isUserHost(host: String): Boolean =
-        configuration.mFilterHost.isNotEmpty() && !configuration.mFilterHost.find { it.toLowerCase().endsWith(host, true) }.isNullOrEmpty()
+        configuration.mFilterHost.isNotEmpty() && !configuration.mFilterHost.find { it.toLowerCase(Locale.ROOT).endsWith(host, true) }.isNullOrEmpty()
 
     fun saveFromResponse(response: Response) {
         val httpUrl = response.request.url

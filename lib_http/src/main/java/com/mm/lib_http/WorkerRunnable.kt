@@ -2,6 +2,7 @@ package com.mm.lib_http
 
 import android.os.Build
 import android.text.TextUtils
+import android.util.Log
 import com.google.gson.JsonObject
 import com.google.gson.reflect.TypeToken
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -12,16 +13,25 @@ import org.json.JSONObject
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.HashMap
 
 
 /**
  * Created by : majian
  * Date : 4/13/21
  * Describe : 获取动态host
+ * @sample DynamicHostInterceptor host type 0: api + h5 1: 仅api 2 :仅h5
+ * {
+ *   code: 1,
+ *   data: {
+ *     "http://api.github.com/": {
+ *         "0": "http://api.github.com/",
+ *         "1": "http://api.github.com/",
+ *         "2": "http://api.github.com/"
+ *      }
+ *    }
+ * }
  */
-
-class WorkerRunnable internal constructor(private val authCookieJar: AuthCookieJar, private val configuration: RetrofitConfiguration) : Runnable {
+internal class WorkerRunnable internal constructor(private val authCookieJar: AuthCookieJar, private val configuration: RetrofitConfiguration) : Runnable {
     private val baseHost
         get() = configuration.mDynamicHostUrl
 
@@ -30,7 +40,7 @@ class WorkerRunnable internal constructor(private val authCookieJar: AuthCookieJ
             val bufferedSource: BufferedSource = file.source().buffer()
             bufferedSource.use {
                 val type = object : TypeToken<HashMap<String, HashMap<String, String>>>() {}.type
-                val json =  RetrofitGlobal.gson.fromJson<HashMap<String, HashMap<String, String>>>(it.readUtf8(),type)
+                val json = RetrofitGlobal.gson.fromJson<HashMap<String, HashMap<String, String>>>(it.readUtf8(), type)
                 HostGlobal.dynamicHostMap.putAll(json)
             }
         }
@@ -79,8 +89,7 @@ class WorkerRunnable internal constructor(private val authCookieJar: AuthCookieJ
                 if (response.isSuccessful) {
                     response.body?.string()?.let {
                         val jSONObject = JSONObject(it)
-                        val code = jSONObject.optInt("code")
-                        if (jSONObject.has("data") && code == 1) {
+                        if (jSONObject.has("data")) {
                             jSONObject.optJSONObject("data")?.apply {
                                 val json = RetrofitGlobal.gson.fromJson(this.toString(), JsonObject::class.java)
                                 val type = object : TypeToken<HashMap<String, HashMap<String, String>>>() {}.type
@@ -97,7 +106,7 @@ class WorkerRunnable internal constructor(private val authCookieJar: AuthCookieJ
                     loadCache(file2)
                 }
             } catch (e: Exception) {
-                LHttp.e("WorkerRunnable: ${e.message}")
+                LHttp.e(Log.getStackTraceString(e))
             } finally {
                 RetrofitGlobal.rwLock.writeLock().unlock()
             }

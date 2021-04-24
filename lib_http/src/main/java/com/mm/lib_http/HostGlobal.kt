@@ -10,12 +10,12 @@ import okhttp3.HttpUrl
  * Describe :
  */
 
-object HostGlobal {
+internal object HostGlobal {
     var dynamicHostMap = hashMapOf<String, HashMap<String, String>>()
     val dynamicOriginalHostMap = hashMapOf<String, HostInfo>()
 }
 
-class HostInfo private constructor(private val builder: Builder) {
+internal class HostInfo private constructor(private val builder: Builder) {
     internal val dynamicHost: Boolean
         get() = builder.dynamicHost
 

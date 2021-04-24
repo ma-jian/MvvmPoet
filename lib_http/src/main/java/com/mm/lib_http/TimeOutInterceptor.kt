@@ -9,10 +9,11 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by : majian
  * Date : 4/14/21
- * Describe : 超时拦截
+ * Describe : 超时拦截器，
+ * @see TimeOut 可配置超时单位，默认 [TimeUnit.SECONDS]
  */
 
-class TimeOutInterceptor : Interceptor {
+internal class TimeOutInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         request.tag(Invocation::class.java)?.run {

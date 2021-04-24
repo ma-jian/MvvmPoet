@@ -75,7 +75,7 @@ open class RetrofitGlobal private constructor(val build: Builder) {
                     .needSystemParam(annotation.needSystemParam).signMethod(annotation.signMethod)
             }
             HostGlobal.dynamicOriginalHostMap[httpUrl.host] = hostInfo
-            require(retrofitBuilder != null) { "在使用create前,请先进行RetrofitGlobal初始化build()" }
+            require(this::retrofitBuilder.isInitialized) { "在使用create前,请先进行RetrofitGlobal初始化build()" }
             return retrofitBuilder.baseUrl(httpUrl).build().create(clazz)
         }
     }

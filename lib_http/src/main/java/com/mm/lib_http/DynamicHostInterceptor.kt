@@ -10,10 +10,11 @@ import okhttp3.Response
 /**
  * Created by : majian
  * Date : 4/14/21
- * Describe : 动态域名
+ * Describe : 动态域名下发；未指定域名支持下配置 host Type 0: api + h5 1: 仅api 2 :仅h5
+ * @see WorkerRunnable 预加载已下发域名
  */
 
-class DynamicHostInterceptor : Interceptor {
+internal class DynamicHostInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val scheme = request.url.scheme

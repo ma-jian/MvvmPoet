@@ -14,12 +14,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.mm.lib_http.RetrofitGlobal
+import com.mm.lib_http.asCallFlow
+import com.mm.lib_http.emitFlow
 import com.mm.lib_util.DialogQueue
 import com.mm.lib_util.FitDisplayMetrics
 import com.mm.lib_util.FitDisplayMetrics.Companion.restDisplayMetrics
 import com.mm.lib_util.etoast.ToastGlobal
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
 import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity() {
@@ -38,9 +40,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.retrofit).setOnClickListener {
             val create = RetrofitGlobal.create<DemoService>()
             GlobalScope.launch(Dispatchers.Main + exception) {
-                flowEmit {
-                    create.getUser(editText.text.toString()).execute().body()
-                }.collect {
+                create.getUser(editText.text.toString()).asCallFlow().collect {
                     textView.text = "${Thread.currentThread().name} : $it"
                 }
             }
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         }
         findViewById<View>(R.id.flow).setOnClickListener {
             GlobalScope.launch(Dispatchers.Main + exception) {
-                flowEmit {
+                emitFlow {
                     data()
                 }.collect {
                     textView.text = "${Thread.currentThread().name} : $it"
@@ -142,21 +142,13 @@ class MainActivity : AppCompatActivity() {
         return "我是消息@@@@ 我迟来了 3秒"
     }
 
-    suspend fun <T> doBackground(block: suspend () -> T) = withContext(Dispatchers.IO) {
-        block.invoke()
-    }
 
-    suspend fun <T> flowEmit(block: suspend () -> T) = supervisorScope {
-        flow {
-            emit(block.invoke())
-        }.onEach {
-            //            throw IllegalStateException("我是flow抛出异常")
-        }.flowOn(Dispatchers.IO).catch { e ->
-            currentCoroutineContext().apply {
-                this[CoroutineExceptionHandler]?.let {
-                    it.handleException(this, e)
-                }
-            }
+    override fun onBackPressed() {
+        //        super.onBackPressed()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            finishAfterTransition()
+        } else {
+            super.onBackPressed()
         }
     }
 }

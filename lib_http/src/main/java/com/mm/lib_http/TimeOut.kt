@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by : majian
  * Date : 4/14/21
- * Describe :
+ * Describe : 超时设置
  */
 
 @Retention(AnnotationRetention.RUNTIME)

@@ -26,7 +26,14 @@ open class RetrofitConfiguration private constructor(private val builder: Builde
 
     companion object {
         fun build(block: Builder.() -> Unit) = Builder().apply(block).build()
-        val DEFAULT = build {}
+        val DEFAULT = build {
+            interceptors { emptyList() }
+            networkInterceptors { emptyList() }
+            cookieName { "cookie" }
+            level = HttpLoggingInterceptor.Level.NONE
+            dynamicHostUrl = ""
+            filterHost { emptyList() }
+        }
     }
 
     class Builder constructor() {
@@ -37,14 +44,14 @@ open class RetrofitConfiguration private constructor(private val builder: Builde
         internal var dynamicHostUrl: String = ""
         internal var level = HttpLoggingInterceptor.Level.NONE
 
-        internal constructor(retrofitConfiguration: RetrofitConfiguration) : this() {
+        internal fun copy(retrofitConfiguration: RetrofitConfiguration) = apply {
             this.interceptors = retrofitConfiguration.mInterceptors
             this.networkInterceptors = retrofitConfiguration.mNetworkInterceptors
             this.filterHost = retrofitConfiguration.mFilterHost.toMutableList()
             this.cookieName = retrofitConfiguration.mCookieName
             this.dynamicHostUrl = retrofitConfiguration.mDynamicHostUrl
             this.level = retrofitConfiguration.mLevel
-        }
+        }.build()
 
         fun build(): RetrofitConfiguration = RetrofitConfiguration(this)
 
@@ -56,6 +63,9 @@ open class RetrofitConfiguration private constructor(private val builder: Builde
             this.networkInterceptors = interceptors.invoke()
         }
 
+        /**
+         * 域名筛选。
+         */
         fun filterHost(hosts: () -> List<String>) = apply {
             this.filterHost = hosts.invoke().toMutableList()
         }

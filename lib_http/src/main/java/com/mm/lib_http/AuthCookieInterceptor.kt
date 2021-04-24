@@ -12,7 +12,7 @@ import okhttp3.Response
  * Describe :
  */
 
-class AuthCookieInterceptor constructor(private val authCookieJar: AuthCookieJar) :Interceptor {
+internal class AuthCookieInterceptor constructor(private val authCookieJar: AuthCookieJar) :Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val builder = request.newBuilder()
