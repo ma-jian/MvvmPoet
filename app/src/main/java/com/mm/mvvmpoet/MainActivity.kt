@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val resources: Resources = FitDisplayMetrics.fitDisplayMetrics(resources)
         setContentView(R.layout.activity_main)
         val editText = findViewById<EditText>(R.id.editName)
         val textView = findViewById<TextView>(R.id.textView)
@@ -67,7 +68,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val resources: Resources = FitDisplayMetrics.fitDisplayMetrics(resources)
         textView.text = "density :${resources.displayMetrics.density} ; densityDpi :${resources.displayMetrics.densityDpi} ; scaledDensity :${resources.displayMetrics?.scaledDensity} "
         findViewById<View>(R.id.dialog).setOnClickListener {
             val dialog = AlertDialog.Builder(this.restDisplayMetrics()).apply {
@@ -82,6 +82,9 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.dialogQueue).setOnClickListener {
             createdialog()
+        }
+        findViewById<View>(R.id.javaActivity).setOnClickListener {
+            startActivity(Intent(this, JActivity::class.java))
         }
     }
 
@@ -117,8 +120,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         val dialog4 = DialogFragment(R.layout.custom_toast_view_success)
-        dialog4.view?.setBackgroundColor(Color.RED)
-        dialog4.view?.findViewById<TextView>(R.id.message)?.text = "我是dialog4"
         DialogQueue.addDialog(dialog4, 1) {
             delay = 1000
             targetActivity = { arrayListOf(SecondActivity::class.java) }
@@ -126,8 +127,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         val dialog5 = DialogFragment(R.layout.custom_toast_view_success)
-        dialog5.view?.setBackgroundColor(Color.GREEN)
-        dialog5.view?.findViewById<TextView>(R.id.message)?.text = "我是dialog5"
         DialogQueue.addDialog(dialog5, 5)
     }
 

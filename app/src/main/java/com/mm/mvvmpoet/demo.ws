@@ -20,8 +20,11 @@ demo!!.offer(1) {
 
 //主构造的参数可以在初始化块中使用。它们也可以在类体内声明的属性初始化器中使用：
 class Demo constructor(str: String) : Base(), MyInterface {
-    //声明的属性可以是可变的（var）或只读的（val）。
-    private val read: String = "" //对一个只读的参数赋值为空无意义 'read' is always non-null type
+    /**
+     *  声明的属性可以是可变的（var）或只读的（val）。
+     *  对一个只读的参数赋值为空无意义 'read' is always non-null type
+     */
+    private val read: String = ""
         get() = "$field-我是getter"
 
     private var write: String? = ""
@@ -76,5 +79,15 @@ open class Base {
     fun offer(i: Int, block: () -> Unit) {
         block.invoke()
         println("$i")
+    }
+}
+//高阶函数
+max("a") { a, b -> a.length < b.length }
+
+fun compare2(a: String, b: String): Boolean = a.length < b.length
+
+fun max(str: String, compare: (a: String, b: String) -> Boolean) {
+    if (compare(str, "demo")) {
+        println("str $str")
     }
 }

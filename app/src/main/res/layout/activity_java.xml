@@ -13,7 +13,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/javaActivity">
+        app:layout_constraintTop_toBottomOf="@+id/toast">
 
         <TextView
             android:id="@+id/textView"
@@ -98,15 +98,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/toast"
         app:layout_constraintTop_toTopOf="@+id/toast" />
-
-
-    <Button
-        android:id="@+id/javaActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="javaActivity"
-        app:layout_constraintEnd_toEndOf="@+id/dialog"
-        app:layout_constraintStart_toStartOf="@+id/dialog"
-        app:layout_constraintTop_toBottomOf="@+id/dialog" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

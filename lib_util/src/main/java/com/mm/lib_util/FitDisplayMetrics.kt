@@ -77,6 +77,10 @@ class FitDisplayMetrics private constructor(val builder: Builder) {
             DensityConfig(density, if (isOpenScale) density.times(fontScale) else density, densityDpi).apply(resources)
         }
 
+        @JvmName("restDisplayMetrics1")
+        fun restDisplayMetrics(context: Context, newDesign: Float = 0f) =
+            context.restDisplayMetrics(newDesign)
+
         /**
          * @param newDesign 新设计尺寸适配，默认恢复系统初始化
          */

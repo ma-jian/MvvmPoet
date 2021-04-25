@@ -19,7 +19,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
-import java.util.concurrent.PriorityBlockingQueue
 import java.util.concurrent.locks.ReentrantLock
 
 /**
@@ -51,8 +50,10 @@ class DialogQueue private constructor() : ActivityDelegate.InstallableWatcher {
     companion object {
         private lateinit var queue: ArrayDeque<Node>
         private var mShowingNode: Node? = null
+
         //找的已符合条件的弹窗队列
-        private val readyAsyncNode = PriorityBlockingQueue<Node>()
+        private val readyAsyncNode = PriorityQueue<Node>()
+
         //已经弹出的弹窗队列
         private val runningAsyncNode = ArrayDeque<Node>()
         private val lock = ReentrantLock()
@@ -82,7 +83,7 @@ class DialogQueue private constructor() : ActivityDelegate.InstallableWatcher {
          * @param block 队列其他配置
          */
         fun addDialog(dialog: Dialog, code: Int, block: (Node.() -> Unit)? = null) {
-            require(this::queue.isInitialized) { "请先进行DialogStack初始化register" }
+            require(this::queue.isInitialized) { "请先进行DialogQueue初始化register" }
             val dialogNode = DialogNode()
             dialogNode.dialog = dialog
             dialogNode.code = code
@@ -94,7 +95,7 @@ class DialogQueue private constructor() : ActivityDelegate.InstallableWatcher {
         }
 
         fun addDialog(dialog: DialogFragment, code: Int, block: (Node.() -> Unit)? = null) {
-            require(this::queue.isInitialized) { "请先进行DialogStack初始化register" }
+            require(this::queue.isInitialized) { "请先进行DialogQueue初始化register" }
             val dialogNode = AndroidxFragmentNode()
             dialogNode.dialog = dialog
             dialogNode.code = code
@@ -106,7 +107,7 @@ class DialogQueue private constructor() : ActivityDelegate.InstallableWatcher {
         }
 
         fun addDialog(dialog: android.app.DialogFragment, code: Int, block: (Node.() -> Unit)? = null) {
-            require(this::queue.isInitialized) { "请先进行DialogStack初始化register" }
+            require(this::queue.isInitialized) { "请先进行DialogQueue初始化register" }
             val dialogNode = FragmentNode()
             dialogNode.dialog = dialog
             dialogNode.code = code
@@ -284,7 +285,11 @@ class DialogQueue private constructor() : ActivityDelegate.InstallableWatcher {
         lateinit var dialog: Dialog
     }
 
-    open class Node : Comparable<Node> {
+    /**
+     * @see code 队列在code之后，进行时间优先原则弹出
+     * @param offerTime 加入队列时间，弹窗实行时间优先原则
+     */
+    open class Node(private val offerTime: Long = System.currentTimeMillis()) : Comparable<Node> {
         var code: Int = 0
         var targetFragment: () -> List<Class<out ComponentCallbacks>> = { emptyList() }
         var targetActivity: () -> List<Class<out Activity>> = { emptyList() }
@@ -293,7 +298,12 @@ class DialogQueue private constructor() : ActivityDelegate.InstallableWatcher {
         var tag: String? = ""
         var intercept: () -> Boolean = { false }
         override fun compareTo(other: Node): Int {
-            return if (override) -1 else code.compareTo(other.code)
+            return if (override) {
+                -1
+            } else {
+                val compare = this.code.compareTo(other.code)
+                if (compare == 0) this.offerTime.compareTo(other.offerTime) else compare
+            }
         }
     }
 
@@ -308,6 +318,82 @@ class DialogQueue private constructor() : ActivityDelegate.InstallableWatcher {
         queue.clear()
         if (lock.isHeldByCurrentThread) {
             lock.unlock()
+        }
+    }
+
+    /**
+     * 建造者模式为java提供。kotlin优先使用 @see [DialogQueue.addDialog]
+     */
+    class Builder {
+        private var targetFragment: () -> List<Class<out ComponentCallbacks>> = { emptyList() }
+        private var targetActivity: () -> List<Class<out Activity>> = { emptyList() }
+        private var delay: Long = 0L
+        private var override: Boolean = false
+        private var tag: String? = ""
+        private var intercept: () -> Boolean = { false }
+        private lateinit var dialog: Dialog
+        private lateinit var dialogAndroidxFragment: DialogFragment
+        private lateinit var dialogFragment: android.app.DialogFragment
+        private var code: Int = 0
+
+        fun addDialog(dialog: Dialog, code: Int) = apply {
+            this.dialog = dialog
+            this.code = code
+        }
+
+        fun addDialog(dialog: DialogFragment, code: Int) = apply {
+            this.dialogAndroidxFragment = dialog
+            this.code = code
+        }
+
+        fun addDialog(dialog: android.app.DialogFragment, code: Int) = apply {
+            this.dialogFragment = dialog
+            this.code = code
+        }
+
+        fun targetFragment(targetF: List<Class<out ComponentCallbacks>>) = apply {
+            this.targetFragment = { targetF }
+        }
+
+        fun targetActivity(targetA: List<Class<out Activity>>) = apply {
+            this.targetActivity = { targetA }
+        }
+
+        fun delay(delay: Long) = apply {
+            this.delay = delay
+        }
+
+        fun tag(tag: String) = apply {
+            this.tag = tag
+        }
+
+        fun intercept(bool: Boolean) {
+            this.intercept = { bool }
+        }
+
+        fun build() {
+            val node: (Node) -> Unit = {
+                it.targetActivity = this.targetActivity
+                it.targetFragment = this.targetFragment
+                it.override = this.override
+                it.delay = this.delay
+                it.intercept = this.intercept
+                it.tag = this.tag
+            }
+            when {
+                this::dialog.isInitialized -> {
+                    addDialog(dialog, code, node)
+                }
+                this::dialogAndroidxFragment.isInitialized -> {
+                    addDialog(dialogAndroidxFragment, code, node)
+                }
+                this::dialogFragment.isInitialized -> {
+                    addDialog(dialogFragment, code, node)
+                }
+                else -> {
+                    throw IllegalAccessException("必须提供一个可供加入队列的弹窗")
+                }
+            }
         }
     }
 }

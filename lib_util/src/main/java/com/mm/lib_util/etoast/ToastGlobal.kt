@@ -58,6 +58,13 @@ class ToastGlobal private constructor() : ActivityDelegate.InstallableWatcher {
         }
 
         /**
+         * 为java提供
+         */
+        fun showByQueue(text: CharSequence?) {
+            showByQueue(text, 0)
+        }
+
+        /**
          * 按队列显示,先进先出
          * @param text
          * @param style
@@ -101,6 +108,17 @@ class ToastGlobal private constructor() : ActivityDelegate.InstallableWatcher {
         }
 
         /**
+         * 为java提供
+         */
+        fun show(text: CharSequence?) {
+            show(text, EToast.LENGTH_SHORT, 0)
+        }
+
+        fun show(text: CharSequence?, duration: Int) {
+            show(text, duration, 0)
+        }
+
+        /**
          * @param text
          * @param duration 可以是任意时间，但不保证生效。
          * @param style 自定义布局
@@ -137,6 +155,6 @@ class ToastGlobal private constructor() : ActivityDelegate.InstallableWatcher {
     }
 
     override fun uninstall(application: Application) {
-
+        queue.clear()
     }
 }
