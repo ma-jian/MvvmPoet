@@ -67,13 +67,13 @@ private fun handleCoroutineExceptionImpl(context: CoroutineContext, exception: T
         } catch (t: Throwable) {
             // Use thread's handler if custom handler failed to handle exception
             val currentThread = Thread.currentThread()
-            currentThread.uncaughtExceptionHandler.uncaughtException(currentThread, handlerException(exception, t))
+            currentThread.uncaughtExceptionHandler?.uncaughtException(currentThread, handlerException(exception, t))
         }
     }
 
     // use thread's handler
     val currentThread = Thread.currentThread()
-    currentThread.uncaughtExceptionHandler.uncaughtException(currentThread, exception)
+    currentThread.uncaughtExceptionHandler?.uncaughtException(currentThread, exception)
 }
 
 private fun handlerException(originalException: Throwable, thrownException: Throwable): Throwable {

@@ -3,14 +3,18 @@ package com.mm.mvvmpoet;
 import android.app.Dialog;
 import android.content.ContextWrapper;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import com.mm.lib_http.RetrofitGlobal;
 import com.mm.lib_util.DialogQueue;
 import com.mm.lib_util.FitDisplayMetrics;
 import com.mm.lib_util.etoast.ToastCompat;
@@ -18,6 +22,9 @@ import com.mm.lib_util.etoast.ToastGlobal;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by : majian
@@ -30,6 +37,26 @@ public class JActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_java);
+        EditText editName = findViewById(R.id.editName);
+        TextView textView = findViewById(R.id.textView);
+        findViewById(R.id.retrofit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Call<Object> call = RetrofitGlobal.Companion.create(DemoService.class).getUser(editName.getText().toString());
+                call.enqueue(new Callback<Object>() {
+                    @Override
+                    public void onResponse(Call<Object> call, Response<Object> response) {
+                        textView.setText(response.body().toString());
+                    }
+
+                    @Override
+                    public void onFailure(Call<Object> call, Throwable t) {
+                        textView.setText(Log.getStackTraceString(t));
+                    }
+                });
+            }
+        });
+
         findViewById(R.id.toast).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,7 +67,7 @@ public class JActivity extends AppCompatActivity {
                     @Override
                     public Unit invoke(ToastCompat.Builder builder) {
                         builder.duration(1000);
-                        builder.setGravity(Gravity.BOTTOM, 0, 0);
+                        builder.setGravity(Gravity.BOTTOM);
                         return null;
                     }
                 });

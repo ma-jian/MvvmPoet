@@ -74,10 +74,10 @@ class FitDisplayMetrics private constructor(val builder: Builder) {
             val displayPx = if (orientation == ORIENTATION_WIDTH) screen[0] else screen[1]
             val density = displayPx.times(1.0f).div(designDp)
             val densityDpi = density.times(160).toInt()
-            DensityConfig(density, if (isOpenScale) density.times(fontScale) else density, densityDpi).apply(resources)
+            DensityConfig(density, if (isOpenScale) density.times(fontScale) else defaultDisplay.scaledDensity, densityDpi).apply(resources)
         }
 
-        @JvmName("restDisplayMetrics1")
+        @JvmName("restNewDisplayMetrics")
         fun restDisplayMetrics(context: Context, newDesign: Float = 0f) =
             context.restDisplayMetrics(newDesign)
 

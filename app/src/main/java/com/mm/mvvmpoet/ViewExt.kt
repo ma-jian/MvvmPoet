@@ -33,32 +33,6 @@ fun View.covertBitmap(): Bitmap = measureSpec().run {
 }
 
 /**
- * Bitmap Save
- * @param fileName 文件名 .jpg .jpeg
- * @param filePath 文件地址
- * @param cacheFile 返回保存后文件
- */
-//inline fun Bitmap.saveToFile(fileName: () -> String, filePath: () -> File = { JiaKaoTongApplication.getAppContext().externalCacheDir },
-//                             cacheFile: (File) -> Unit) {
-//    this.also {
-//        val file = filePath.invoke()
-//        if (!file.exists()) {
-//            file.mkdirs()
-//        }
-//        val cache = File(file.absolutePath, fileName.invoke())
-//        if (cache.exists()) {
-//            cacheFile.invoke(cache)
-//            return@also
-//        }
-//        val outputStream = FileOutputStream(cache)
-//        compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
-//        outputStream.flush()
-//        outputStream.close()
-//        cacheFile.invoke(cache)
-//    }
-//}
-
-/**
  * 点击防重
  * @param time 防重时间
  */

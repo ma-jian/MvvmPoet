@@ -45,19 +45,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="retrofit"
-        app:layout_constraintEnd_toStartOf="@id/flow"
+        app:layout_constraintEnd_toStartOf="@id/toast"
         app:layout_constraintStart_toStartOf="@id/editName"
         app:layout_constraintTop_toBottomOf="@+id/editName" />
-
-    <Button
-        android:id="@+id/flow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="flow"
-        app:layout_constraintBottom_toBottomOf="@+id/retrofit"
-        app:layout_constraintEnd_toEndOf="@+id/dialogQueue"
-        app:layout_constraintStart_toEndOf="@+id/retrofit"
-        app:layout_constraintTop_toTopOf="@+id/retrofit" />
 
 
     <Button
@@ -71,32 +61,13 @@
         app:layout_constraintTop_toTopOf="@+id/retrofit" />
 
     <Button
-        android:id="@+id/dialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="dialog"
-        app:layout_constraintEnd_toStartOf="@id/toast"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/retrofit" />
-
-    <Button
         android:id="@+id/toast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:text="toast"
-        app:layout_constraintBottom_toBottomOf="@+id/dialog"
-        app:layout_constraintEnd_toStartOf="@+id/second"
-        app:layout_constraintStart_toEndOf="@+id/dialog" />
-
-    <Button
-        android:id="@+id/second"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="second"
-        app:layout_constraintBottom_toBottomOf="@+id/toast"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/toast"
-        app:layout_constraintTop_toTopOf="@+id/toast" />
+        app:layout_constraintEnd_toStartOf="@id/dialogQueue"
+        app:layout_constraintBottom_toBottomOf="@+id/retrofit"
+        app:layout_constraintTop_toTopOf="@+id/retrofit"
+        app:layout_constraintStart_toEndOf="@+id/retrofit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

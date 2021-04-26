@@ -159,6 +159,10 @@ class ToastCompat private constructor(private val builder: Builder) {
             this.mY = yOffset
         }
 
+        fun setGravity(gravity: Int) = apply {
+            this.mGravity = gravity
+        }
+
         fun build() = ToastCompat(this)
     }
 }
