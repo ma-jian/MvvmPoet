@@ -2,7 +2,7 @@ apply from: "./compile-api.gradle"
 
 rootProject.name = "MvvmPoet"
 //当module需要提供自身功能对外的能力时，请使用 include_with_api 来替代 include，以便自动生成对应的module-api
-//并在使用此命令的module内添加该module的依赖 compileApi
+//并在使用此命令的module内添加该module的依赖 implementationApi
 
 include ':app'
 include ':common'
