@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#EA8691"
+    android:paddingTop="44dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="56dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/icon"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/icon_error_fill"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@id/message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:textColor="#ffffffff"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/icon"
+            app:layout_constraintEnd_toStartOf="@id/clear"
+            app:layout_constraintStart_toEndOf="@id/icon"
+            app:layout_constraintTop_toTopOf="@id/icon"
+            tools:text="拒绝工单任务SA-0098" />
+
+        <TextView
+            android:id="@+id/clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingTop="12dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="12dp"
+            android:text="@string/clear"
+            android:textColor="#ffffffff"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/icon" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
+

@@ -1,0 +1,150 @@
+ext {
+    // 多模块复用数据，为module提供单独接口能力，供其他module使用
+    include_with_api = { moduleName ->
+        //先正常加载这个模块
+        include(moduleName)
+        //找到这个模块的路径
+        String originDir = project(moduleName).projectDir
+        //这个是新的路径
+        String targetDir = "${originDir}_api"
+        //原模块的名字
+        String originName = project(moduleName).name
+        //新模块的名字
+        def sdkName = "${originName}_api"
+        // 每次编译删除之前的文件
+        deleteDir(targetDir)
+
+        //复制.api文件到新的路径
+        copy() {
+            from originDir
+            into targetDir
+            exclude '**/build/'
+            include '**/*.api'
+            include '**/*.kapi'
+            //支持xml 文件的下发
+            include '**/*_api.xml'
+        }
+
+        def baseName = "common"
+        //直接复制公共模块的AndroidManifest文件到新的路径，作为该模块的文件
+        def commonAndroidManifest = new File("AndroidManifest_api.xml")
+        def apiManifest = new File(originDir + "/src/main/AndroidManifest_api.xml")
+        if (apiManifest.exists()) {
+            commonAndroidManifest = apiManifest
+        }
+
+        copy() {
+            from commonAndroidManifest
+            into "${targetDir}/src/main/"
+            rename("AndroidManifest_api.xml", "AndroidManifest.xml")
+        }
+        //重命名package
+        fileReader("${targetDir}/src/main/AndroidManifest.xml", baseName, "${sdkName}");
+
+        //从根目录去通用build
+        def commonGradle = new File("build_api.gradle")
+        def apiGradle = new File(originDir + "/build_api.gradle")
+        if (apiGradle.exists()) {
+            commonGradle = apiGradle
+        }
+        //复制 gradle文件到新的路径，作为该模块的gradle
+        copy() {
+            from commonGradle
+            into "${targetDir}/"
+            filter { line ->
+                line.replace("'com.android.application'", "'com.android.library'")
+            }
+            rename("build_api.gradle", "build.gradle")
+
+        }
+
+        //删除空文件夹
+        deleteEmptyDir(new File(targetDir))
+
+        // 重命名.api文件，生成正常的.java文件
+        renameApiFiles(targetDir, '.api', '.java')
+        renameApiFiles(targetDir, '.kapi', '.kt')
+        renameApiFiles(targetDir, '_api.xml', '.xml')
+
+        //正常加载新的模块
+        include ":$sdkName"
+    }
+
+
+    //依赖api module
+    implementationApi = { module ->
+        def name = module.path
+        dependencies {
+            implementation project("${name}_api")
+        }
+    }
+}
+
+private void deleteEmptyDir(File dir) {
+    if (dir.isDirectory()) {
+        File[] fs = dir.listFiles()
+        if (fs != null && fs.length > 0) {
+            for (int i = 0; i < fs.length; i++) {
+                File tmpFile = fs[i]
+                if (tmpFile.isDirectory()) {
+                    deleteEmptyDir(tmpFile)
+                }
+                if (tmpFile.isDirectory() && tmpFile.listFiles().length <= 0) {
+                    tmpFile.delete()
+                }
+            }
+        }
+        if (dir.isDirectory() && dir.listFiles().length == 0) {
+            dir.delete()
+        }
+    }
+}
+
+private void deleteDir(String targetDir) {
+    FileTree targetFiles = fileTree(targetDir)
+    targetFiles.exclude "*.iml"
+    targetFiles.each { File file ->
+        file.delete()
+    }
+}
+
+/**
+ * rename api files(java, kotlin...)
+ */
+private def renameApiFiles(root_dir, String suffix, String replace) {
+    FileTree files = fileTree(root_dir).include("**/*$suffix")
+    files.each {
+        File file ->
+            //匹配非代码文件
+            if (file.absolutePath.replace(suffix, "").indexOf(".") != -1) {
+                file.renameTo(new File(file.absolutePath.replace(suffix, "")))
+            } else {
+                file.renameTo(new File(file.absolutePath.replace(suffix, replace)))
+            }
+    }
+}
+
+//替换AndroidManifest里面的字段
+def fileReader(path, name, sdkName) {
+    def readerString = ""
+    def hasReplace = false
+
+    file(path).withReader('UTF-8') { reader ->
+        reader.eachLine {
+            if (it.find(name)) {
+                it = it.replace(name, sdkName)
+                hasReplace = true
+            }
+            readerString <<= it
+            readerString << '\n'
+        }
+
+        if (hasReplace) {
+            file(path).withWriter('UTF-8') {
+                within ->
+                    within.append(readerString)
+            }
+        }
+        return readerString
+    }
+}

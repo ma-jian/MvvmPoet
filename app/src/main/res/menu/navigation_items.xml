@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+    <item
+        android:id="@+id/tab_0"
+        android:enabled="true"
+        android:title="Tab1"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/tab_1"
+        android:enabled="true"
+        android:title="Tab2"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/tab_2"
+        android:enabled="true"
+        android:title="Tab3"
+        app:showAsAction="always" />
+</menu>

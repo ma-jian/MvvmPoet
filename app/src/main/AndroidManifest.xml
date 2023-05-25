@@ -9,21 +9,25 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:networkSecurityConfig="@xml/network_config"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MvvmPoet">
+
         <activity
             android:name=".MainActivity"
-            android:configChanges="screenSize|fontScale|density|orientation|keyboardHidden">
+            android:configChanges="screenSize|fontScale|density|orientation|keyboardHidden"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SecondActivity" />
-        <activity android:name=".JActivity" />
+        <activity
+            android:name=".SecondActivity"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
     </application>
 
 </manifest>

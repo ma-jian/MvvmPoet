@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+<!--    <domain includeSubdomains="true">android.bugly.qq.com</domain>-->
+<!--    <domain includeSubdomains="true">cfg.imtt.qq.com</domain>-->
+<!--    <domain includeSubdomains="true">tbs.imtt.qq.com</domain>-->
+<!--    <domain includeSubdomains="true">x5.tencent.com</domain>-->
+</network-security-config>

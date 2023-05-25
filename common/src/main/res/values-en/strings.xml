@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_empty">No Data</string>
+    <string name="text_retry">Retry</string>
+    <string name="text_error">Loading failed</string>
+    <string name="text_loading"><![CDATA[Loading&#8230;]]></string>
+    <string name="service_connected">Service Connected</string>
+    <string name="clear">Clear</string>
+    <string name="app_name">MvvmPoet</string>
+</resources>

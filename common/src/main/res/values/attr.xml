@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MToolbar">
+        <attr name="android:fitsSystemWindows"/>
+        <attr name="android:background"/>
+        <attr name="navigationIcon" format="reference" />
+        <attr name="navigationIconCircle" format="boolean" />
+        <attr name="title" format="string" />
+        <attr name="center_title" format="string" />
+        <attr name="center_maxEms" format="integer" min="0" />
+        <attr name="center_textColor" format="reference|color" />
+        <attr name="center_textSize" format="dimension" />
+        <attr name="center_titleStyle" format="dimension">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+            <flag name="bold_italic" value="3" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="StatusView">
+        <attr name="sv_loading_view" format="reference" />
+        <attr name="sv_empty_view" format="reference" />
+        <attr name="sv_error_view" format="reference" />
+        <attr name="sv_error_drawable" format="reference" />
+        <attr name="sv_empty_drawable" format="reference" />
+        <attr name="sv_empty_lottie" format="string" />
+        <attr name="sv_error_lottie" format="string" />
+        <attr name="sv_loading_lottie" format="string" />
+        <attr name="sv_error_text" format="string" />
+        <attr name="sv_empty_text" format="string" />
+        <attr name="sv_retry_text" format="string" />
+    </declare-styleable>
+</resources>

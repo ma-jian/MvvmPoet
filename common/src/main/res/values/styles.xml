@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--    toolbar  -->
+    <style name="ToolbarTheme" parent="Widget.AppCompat.Toolbar">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
+        <item name="maxHeight">?attr/actionBarSize</item>
+        <item name="toolbarNavigationButtonStyle">@style/toolbar_nav_button</item>
+        <item name="android:actionBarStyle">@style/toolbar_action_button</item>
+        <item name="actionMenuTextAppearance">@style/toolbar_menu_title</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="titleTextAppearance">@style/toolbar_title</item>
+        <item name="titleMargin">0dp</item>
+        <item name="subtitleTextAppearance">@style/toolbar_subtitle</item>
+        <item name="contentInsetEnd">0dp</item>
+        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetEndWithActions">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+        <item name="contentPadding">0dp</item>
+        <item name="android:minHeight">46dp</item>
+        <item name="maxButtonHeight">40dp</item>
+        <item name="buttonGravity">center_vertical</item>
+        <item name="android:paddingStart">@dimen/abc_action_bar_default_padding_start_material</item>
+<!--        <item name="android:paddingEnd">4dp</item>-->
+        <item name="actionOverflowMenuStyle">@style/action_overflow_menu</item>
+<!--        <item name="homeAsUpIndicator">@drawable/top_return</item>-->
+    </style>
+    <!--    toolbar navigation-->
+    <style name="toolbar_nav_button" parent="@style/Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:width">40dp</item>
+        <item name="android:maxWidth">40dp</item>
+        <item name="android:minWidth">40dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+    </style>
+    <!--    toolbar action-->
+    <style name="toolbar_action_button" parent="@style/Widget.AppCompat.ActionButton">
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:width">34dp</item>
+        <item name="android:minWidth">34dp</item>
+        <item name="android:minHeight">34dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">15sp</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+    </style>
+
+    <!--menu-->
+    <style name="toolbar_menu_title" parent="@style/TextAppearance.AppCompat.Menu">
+        <item name="android:textColor">@color/color_080707</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="titleMargin">0dp</item>
+        <!--        <item name="android:layout_marginLeft">3dp</item>-->
+    </style>
+
+    <!--主标题-->
+    <style name="toolbar_title" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@color/color_080707</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="titleMargin">0dp</item>
+        <!--        <item name="android:layout_marginLeft">3dp</item>-->
+    </style>
+
+    <!--子标题-->
+    <style name="toolbar_subtitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textColor">@color/color_080707</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="action_overflow_menu" parent="@style/Widget.AppCompat.Light.PopupMenu.Overflow">
+        <item name="android:popupBackground">@color/white</item>
+        <!--不覆盖Toolbar-->
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownVerticalOffset">4dp</item>
+    </style>
+
+    <style name="toolbar_pop_theme">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold|italic</item>
+        <item name="android:drawablePadding">10dp</item>
+    </style>
+    <!--Toolbar -->
+
+    <!--    CommonDialog-->
+    <style name="CommonDialog" parent="Theme.AppCompat.Dialog">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+
+        <item name="android:windowTranslucentStatus">true</item>
+        <!-- 如果你不需要自定义状态栏颜色，下面两个可不要 -->
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!-- 透明导航栏 -->
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+<!--        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>-->
+        <item name="android:windowAnimationStyle">@style/Animation.AppCompat.Dialog</item>
+    </style>
+
+    <style name="Bottom.CommonDialog" parent="CommonDialog">
+        <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
+    </style>
+
+    <style name="DialogAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/bottom_sheet_slide_in</item>
+        <item name="android:windowExitAnimation">@anim/bottom_sheet_slide_out</item>
+    </style>
+
+    <!--    bottomsheet-->
+    <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
+        <item name="android:backgroundDimAmount">0.3</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="ModalBottomSheetDialog" parent="@style/BottomSheetDialog">
+        <item name="android:backgroundDimAmount">0.05</item>
+    </style>
+
+    <style name="NoBackgroundDimEnabled" parent="@style/BottomSheetDialog">
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
+<!--        <item name="android:background">@drawable/bg_common_dialog</item>-->
+    </style>
+
+    <style name="Dialog.CheckBox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="colorControlNormal">@color/color_eeeeee</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+    </style>
+
+</resources>

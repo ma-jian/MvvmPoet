@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="delegate_watcher_auto_install">true</bool>
+    <integer name="bottom_sheet_duration">200</integer>
+</resources>

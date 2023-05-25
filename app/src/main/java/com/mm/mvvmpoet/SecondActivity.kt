@@ -1,52 +1,37 @@
 package com.mm.mvvmpoet
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import com.mm.lib_util.FitDisplayMetrics.Companion.restDisplayMetrics
-import com.mm.lib_util.etoast.ToastGlobal
-import kotlinx.android.synthetic.main.activity_second.*
+import com.mm.annotation.RouterPath
+import com.mm.common.base.BaseActivity
+import com.mm.mvvmpoet.databinding.ActivitySecondBinding
 
 /**
  * Created by : majian
  * Date : 4/16/21
  * Describe :
  */
-class SecondActivity : FragmentActivity() {
+@RouterPath("second_activity", des = "SecondActivity")
+class SecondActivity : BaseActivity<ActivitySecondBinding>() {
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_second)
-        //        findViewById<TextView>(R.id.textView).text = "hello，world"
-        textView.text = "hello，world"
-
-        textView.setOnClickListener { view ->
-            println("$view")
-            AlertDialog.Builder(this.restDisplayMetrics()).apply {
-                setTitle("我是dialog1")
-                setMessage("dialog \ndensity :${resources.displayMetrics?.density} ;\ndensityDpi :${resources.displayMetrics?.densityDpi} ;\nscaledDensity :${resources.displayMetrics?.scaledDensity}")
-                setPositiveButton("确定") { _, _ ->
-                    ToastGlobal.show("我是dialog1 消失了")
-                }
-            }.create().show()
-        }
         val beginTransaction = supportFragmentManager.beginTransaction()
-        val fragment1 = Fragment1()
-        val fragment2 = Fragment2()
-        beginTransaction.add(R.id.container, fragment1, "Fragment1")
-        beginTransaction.add(R.id.container, fragment2, "Fragment2")
-        beginTransaction.show(fragment1).hide(fragment2).commit()
-        var showing: Fragment = fragment1
+        val tab1 = Fragment1()
+        val tab2 = Fragment3()
+        beginTransaction.add(R.id.container, tab1, "tab1")
+        beginTransaction.add(R.id.container, tab2, "tab2")
+        beginTransaction.show(tab1).hide(tab2).commit()
+        var showing: Fragment = tab1
         findViewById<View>(R.id.tab1).setOnClickListener {
-            supportFragmentManager.beginTransaction().hide(showing).show(fragment1).commit()
-            showing = fragment1
+            supportFragmentManager.beginTransaction().hide(showing).show(tab1).commit()
+            showing = tab1
         }
         findViewById<View>(R.id.tab2).setOnClickListener {
-            supportFragmentManager.beginTransaction().hide(showing).show(fragment2).commit()
-            showing = fragment2
+            supportFragmentManager.beginTransaction().hide(showing).show(tab2).commit()
+            showing = tab2
         }
     }
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="text_empty">无数据</string>
+    <string name="text_retry">点我重试</string>
+    <string name="text_error">加载失败</string>
+    <string name="text_loading"><![CDATA[加载中&#8230;]]></string>
+    <string name="service_connected">服务已连接</string>
+    <string name="clear">清除</string>
+    <string name="app_name">MvvmPoet</string>
+</resources>

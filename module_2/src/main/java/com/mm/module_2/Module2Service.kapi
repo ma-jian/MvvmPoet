@@ -1,0 +1,16 @@
+package com.mm.module_2
+
+import com.mm.router.IProvider
+
+
+/**
+ * Date : 2023/5/25
+ * module1对外提供接口
+ */
+interface Module2Service : IProvider {
+
+    fun moduleName(): String
+
+    fun module2Log(message: String)
+
+}

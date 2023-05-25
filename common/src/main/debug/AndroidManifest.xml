@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cloudcc.module_notice">
+
+    <application
+        android:name="com.mm.common.okbus.BaseAppModuleApp"
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
+
+        <service
+            android:name="com.mm.common.okbus.NoticeService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.cloudcc.common.okbus.NoticeService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </service>
+    </application>
+
+</manifest>

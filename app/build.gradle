@@ -1,22 +1,27 @@
 plugins {
     id 'com.android.application'
-    id 'kotlin-android'
-    id 'kotlin-android-extensions'
-//    id 'dagger.hilt.android.plugin'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+//    id 'com.google.devtools.ksp' version '1.8.20-1.0.10'
 }
+
+apply from: "../compile-api.gradle"
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion "30.0.2"
-
     defaultConfig {
         applicationId "com.mm.mvvmpoet"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode rootProject.versionCode
         versionName rootProject.versionName
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
     }
 
     buildTypes {
@@ -25,6 +30,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -35,42 +45,18 @@ android {
 }
 
 dependencies {
-    implementation project(":lib_http")
-    implementation project(":lib_util")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    //Android view
-    implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
-    implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
-    implementation "com.google.android.material:material:$rootProject.materialVersion"
-    implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
-    implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
-    implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
-    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
-    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
-    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
-    implementation "androidx.viewpager2:viewpager2:$rootProject.viewPagerVersion"
-    implementation "androidx.work:work-runtime-ktx:$rootProject.workVersion"
-    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
-
-    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
-
-    //kt coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesVersion"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"
-    //hilt
-    implementation "com.google.dagger:hilt-android:$rootProject.hiltVersion"
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
-
-
-//    kapt "androidx.room:room-compiler:$rootProject.roomVersion"
-//    kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
-//    kapt "com.google.dagger:hilt-android-compiler:$rootProject.hiltVersion"
-
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation "org.jetbrains.kotlin:kotlin-script-runtime:1.4.32"
+    if (isDebug.toBoolean()) {
+        implementation project(":common")
+    } else {
+        implementation project(":common")
+        implementation project(path: ':module_1')
+        implementation project(path: ':module_2')
+    }
+    kapt 'io.github.ma-jian:router-compiler:1.0'
+    implementationApi project(":module_1")
+    implementationApi project(":module_2")
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
 }

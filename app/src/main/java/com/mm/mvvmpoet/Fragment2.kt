@@ -1,31 +1,35 @@
 package com.mm.mvvmpoet
 
-import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import com.mm.lib_util.DialogQueue
+import com.mm.common.base.BaseFragment
+import com.mm.mvvmpoet.databinding.Fragment2LayoutBinding
+import com.mm.router.Router
 
 /**
- * Created by : majian
+ * Created by : m
  * Date : 4/23/21
  * Describe :
  */
 
-class Fragment2 : Fragment(), DialogQueue.FragmentObserver {
+class Fragment2 : BaseFragment<Fragment2LayoutBinding>() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.framge_layout, container, false)
-        view.findViewById<TextView>(R.id.text).text = "Fragment2"
-        view.setBackgroundColor(Color.GREEN)
-        return view
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mBinding.title.text = "Fragment2"
 
-    override fun onHiddenChanged(hidden: Boolean) {
-        super.onHiddenChanged(hidden)
-        notifyVisible(this, !hidden)
+        mBinding.module1.setOnClickListener {
+            val string = mBinding.editPath.text.toString()
+            Router.init(this).open("module_1").withString("message", string).navigation()
+        }
+
+        mBinding.module2.setOnClickListener {
+            val string = mBinding.editPath.text.toString()
+            Router.init(this).open("module_2").withString("message", string).navigation()
+        }
+
+        mBinding.second.setOnClickListener {
+            Router.init(this).open("second_activity").navigation()
+        }
     }
 }

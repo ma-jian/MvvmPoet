@@ -1,16 +1,28 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.MvvmPoet" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.MvvmPoet" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/colorPrimary</item>
+        <item name="colorSecondaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/color_393939</item>
+        <item name="android:textColorSecondary">@color/color_999999</item>
+        <item name="toolbarStyle">@style/ToolbarTheme</item>
+        <item name="actionButtonStyle">@style/toolbar_action_button</item>
+        <item name="toolbarNavigationButtonStyle">@style/toolbar_nav_button</item>
+        <!--        <item name="android:actionOverflowButtonStyle">@style/toolbar_overflow_button_style</item>-->
+        <!--        <item name="actionOverflowMenuStyle">@style/toolbar_action_menu_overflow</item>-->
+
+        <!--        <item name="colorControlNormal">@color/colorAccent</item>-->
+        <!--        <item name="colorControlActivated">@color/colorPrimaryDark</item>-->
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/color_f5f5f5</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>
