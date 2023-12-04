@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cloudcc.module_notice">
+    package="com.mm.common">
 
     <application
         android:name="com.mm.common.okbus.BaseAppModuleApp"
@@ -13,7 +13,7 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.cloudcc.common.okbus.NoticeService" />
+                <action android:name="com.mm.common.okbus.NoticeService" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 

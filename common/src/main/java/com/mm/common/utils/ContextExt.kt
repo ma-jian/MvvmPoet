@@ -120,7 +120,7 @@ inline fun <reified T> T?.notNull(notNullAction: (T) -> Unit, nullAction: () -> 
 /**
  * 复制文本到粘贴板
  */
-fun Context.copyToClipboard(text: String, label: String = "cloudcc") {
+fun Context.copyToClipboard(text: String, label: String = packageName) {
     if (!TextUtils.isEmpty(text)) {
         val clipData = ClipData.newPlainText(label, text)
         val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager

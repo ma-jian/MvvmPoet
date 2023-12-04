@@ -14,10 +14,11 @@ import java.io.File
  */
 
 object SystemUtil {
+
     @JvmStatic
     fun getUserAgent(): String {
         val userAgent = StringBuilder()
-        userAgent.append("CloudCC/")
+//        userAgent.append("/")
         userAgent.append(getAppVersion() + "(") //应用版本号
         userAgent.append(Build.BRAND + ";") //手机厂商
         userAgent.append(Build.MODEL + ";") //手机型号
@@ -27,12 +28,11 @@ object SystemUtil {
     }
 
     /**
-     * 获取本地安装的版本名即versionName,并转换成类似"820"的形式
+     * 获取本地安装的版本名即versionName,并转换成类似"1.1.0"的形式
      */
     @JvmStatic
     fun getAppVersion(): String {
         return try {
-            //获取packagemanager的实例
             val packageManager = DefaultSDKInitialize.mApplication.packageManager
             val packInfo = packageManager.getPackageInfo(DefaultSDKInitialize.mApplication.packageName, 0)
             packInfo.versionName

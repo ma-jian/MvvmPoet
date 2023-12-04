@@ -6,7 +6,6 @@ import android.view.View
 import com.mm.common.base.BaseFragment
 import com.mm.module_1.Module1Service
 import com.mm.module_2.Module2Service
-import com.mm.module_2.Module2ServiceImpl
 import com.mm.mvvmpoet.databinding.Fragment3LayoutBinding
 import com.mm.router.Router
 
@@ -24,14 +23,14 @@ class Fragment3 : BaseFragment<Fragment3LayoutBinding>() {
         mBinding.text.text = "Fragment3"
 
         mBinding.module1.setOnClickListener {
-            val service = Router.init(this).open(Module1Service::class.java).doProvider<Module1Service>()
+            val service = Router.init(this).open("module1/service").doProvider<Module1Service>()
             val moduleName = service?.moduleName()
             val version = service?.version()
             mBinding.text.text = mBinding.text.text.toString() + "\nmoduleName:$moduleName ;version:$version"
         }
 
         mBinding.module2.setOnClickListener {
-            val service = Router.init(this).open(Module2Service::class.java).doProvider<Module2Service>()
+            val service = Router.init(this).open("module2/service").doProvider<Module2Service>()
             val moduleName = service?.moduleName()
             mBinding.text.text = mBinding.text.text.toString() + "\nmoduleName2:$moduleName"
             service?.module2Log("Fragment3 传递日志信息")

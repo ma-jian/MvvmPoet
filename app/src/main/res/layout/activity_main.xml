@@ -18,10 +18,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:itemBackground="@color/white"
-        app:itemHorizontalTranslationEnabled="false"
+        app:itemHorizontalTranslationEnabled="true"
         app:itemRippleColor="@color/color_7C7F86"
-        app:itemTextColor="@color/color_main_tab"
-        app:labelVisibilityMode="labeled"
+        app:itemIconSize="25dp"
+        app:labelVisibilityMode="unlabeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/navigation_items" />

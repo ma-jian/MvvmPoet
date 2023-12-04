@@ -1,12 +1,13 @@
 package com.mm.module_2
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View.OnClickListener
-import com.mm.annotation.RouterPath
 import com.mm.common.base.BaseActivity
 import com.mm.module_1.Module1Service
 import com.mm.module_2.databinding.ActivityModule2Binding
 import com.mm.router.Router
+import com.mm.router.annotation.RouterPath
 
 
 /**
@@ -15,6 +16,7 @@ import com.mm.router.Router
 @RouterPath("module_2")
 class Module2Activity : BaseActivity<ActivityModule2Binding>() {
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding.toolbar.setSupportActionBar(this)

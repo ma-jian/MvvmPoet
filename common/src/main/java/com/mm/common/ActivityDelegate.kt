@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import java.lang.ref.WeakReference
 
 /**
- * Created by : majian
+ * Created by : m
  * @since 1.0
  * Describe : activity生命周期监听代理，为其他工具提供支持。
  */

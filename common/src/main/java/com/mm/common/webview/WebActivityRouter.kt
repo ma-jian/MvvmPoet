@@ -1,5 +1,6 @@
 package com.mm.common.webview
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -12,17 +13,14 @@ import com.mm.router.Router
 object WebActivityRouter {
     @JvmStatic
     fun startFromWeb(intent: IntentBuilder): Boolean {
-        val result = if (intent.mUrl.startsWith("cloudcc")) {
-            Router.init().open(intent.mUrl).navigation()
-        } else {
-            false
+        Router.init().open(intent.mUrl).navigation() {
+            if (Activity.RESULT_OK == it.resultCode) {
+                intent.mRouterResult?.onActivityFound()
+            } else {
+                intent.mRouterResult?.onActivityNotFound()
+            }
         }
-        if (result) {
-            intent.mRouterResult?.onActivityFound()
-        } else {
-            intent.mRouterResult?.onActivityNotFound()
-        }
-        return result
+        return false
     }
 
     class IntentBuilder internal constructor(internal val mUrl: String) {
@@ -42,21 +40,25 @@ object WebActivityRouter {
                 context.startActivity(intent)
                 return true
             }
+
             "sms:", "smsto:" -> {
                 val intent = Intent(Intent.ACTION_SENDTO, Uri.parse(url))
                 context.startActivity(intent)
                 return true
             }
+
             "mailto:" -> {
                 val intent = Intent(Intent.ACTION_SENDTO, Uri.parse(url))
                 context.startActivity(intent)
                 return true
             }
+
             "market:" -> {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 context.startActivity(intent)
                 return true
             }
+
             else -> {
                 return false
             }

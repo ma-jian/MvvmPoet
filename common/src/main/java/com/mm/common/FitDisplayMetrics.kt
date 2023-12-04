@@ -10,7 +10,7 @@ import android.view.WindowManager
 import androidx.annotation.IntDef
 
 /**
- * Created by : majian
+ * Created by : m
  * Date : 4/20/21
  * Describe : 指定屏幕宽高适配，支持动态恢复系统配置
  */

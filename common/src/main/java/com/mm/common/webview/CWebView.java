@@ -125,8 +125,19 @@ public class CWebView extends BaseWebView implements DownloadListener {
 
         private boolean handleOverrideUrl(final String url) {
             if (!TextUtils.isEmpty(url)) {
-                //处理系统协议或cloudcc协议调起本地页面
+                //处理系统协议或自定义协议调起本地页面
                 WebActivityRouter.IntentBuilder intentBuilder = new WebActivityRouter.IntentBuilder(url);
+                intentBuilder.setRouterActivityResult(new RouterActivityResult() {
+                    @Override
+                    public void onActivityFound() {
+
+                    }
+
+                    @Override
+                    public void onActivityNotFound() {
+
+                    }
+                });
                 return WebActivityRouter.startFromWeb(intentBuilder);
             } else {
                 return false;

@@ -2,10 +2,10 @@ package com.mm.module_1
 
 import android.os.Bundle
 import android.view.View.OnClickListener
-import com.mm.annotation.RouterPath
 import com.mm.common.base.BaseActivity
 import com.mm.module_1.databinding.ActivityModule1Binding
 import com.mm.router.Router
+import com.mm.router.annotation.RouterPath
 
 
 /**

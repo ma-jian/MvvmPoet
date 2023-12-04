@@ -2,9 +2,9 @@ package com.mm.mvvmpoet
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import com.mm.annotation.RouterPath
 import com.mm.common.base.BaseActivity
 import com.mm.mvvmpoet.databinding.ActivityMainBinding
+import com.mm.router.annotation.RouterPath
 import kotlinx.coroutines.*
 
 /**

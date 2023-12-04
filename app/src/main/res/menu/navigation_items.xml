@@ -6,18 +6,35 @@
     <item
         android:id="@+id/tab_0"
         android:enabled="true"
-        android:title="Tab1"
+        android:icon="@drawable/home_g"
+        android:title=""
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/tab_1"
         android:enabled="true"
-        android:title="Tab2"
-        app:showAsAction="always" />
+        android:icon="@drawable/heart_g"
+        android:title=""
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/tab_2"
         android:enabled="true"
-        android:title="Tab3"
+        android:icon="@drawable/recipe_g"
+        android:title=""
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/tab_3"
+        android:enabled="true"
+        android:icon="@drawable/notification_g"
+        android:title=""
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/tab_4"
+        android:enabled="true"
+        android:icon="@drawable/profile_g"
+        android:title=""
         app:showAsAction="always" />
 </menu>

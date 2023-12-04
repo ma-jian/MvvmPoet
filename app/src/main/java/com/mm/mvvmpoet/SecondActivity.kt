@@ -4,12 +4,12 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.mm.annotation.RouterPath
 import com.mm.common.base.BaseActivity
 import com.mm.mvvmpoet.databinding.ActivitySecondBinding
+import com.mm.router.annotation.RouterPath
 
 /**
- * Created by : majian
+ * Created by : m
  * Date : 4/16/21
  * Describe :
  */

@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
 }
 apply from: "../compile-api.gradle"
 
@@ -15,12 +15,6 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
-
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [moduleName: project.getName()]
-            }
-        }
     }
 
     buildTypes {
@@ -43,9 +37,13 @@ android {
     }
 }
 
+ksp {
+    arg("moduleName", project.getName())
+}
+
 dependencies {
     implementation project(":common")
-    kapt 'io.github.ma-jian:router-compiler:1.0'
+    ksp 'io.github.ma-jian:router-ksp:1.0.3'
     implementationApi project(":module_1")
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
